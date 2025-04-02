@@ -22,12 +22,12 @@ public class StateController {
     // ✅ Handles requests to /state/{abbreviation}
     @GetMapping("/state/{abbreviation}")
     public ResponseEntity<?> getStateName(@PathVariable String abbreviation) {
-        // Validate abbreviation length (must be 2 characters)
+        // abbreviation must be 2 characters)
         if (abbreviation.length() != 2) {
             return ResponseEntity.badRequest().body("Error: State abbreviation must be exactly 2 letters.");
         }
 
-        // Convert to uppercase for case-insensitive lookup
+        // convert ot uppercase for case insensitivity
         abbreviation = abbreviation.toUpperCase();
 
         // Retrieve the state name or return 404 if not found
@@ -39,7 +39,7 @@ public class StateController {
         return ResponseEntity.ok(stateName);
     }
 
-    // ✅ Handles requests to /state/ (missing abbreviation)
+    // ✅ Handles requests to /state/(missing abbreviation)
     @GetMapping(value = {"/state/"})
     public ResponseEntity<?> handleMissingAbbreviation() {
         return ResponseEntity.badRequest().body("Error: State abbreviation is required.");
