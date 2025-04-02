@@ -39,7 +39,7 @@ public class StateController {
         return ResponseEntity.ok(stateName);
     }
 
-    // ✅ Handles requests to /state/(missing abbreviation)
+    // ✅ handles /state/(missing abbreviation)
     @GetMapping(value = {"/state/"})
     public ResponseEntity<?> handleMissingAbbreviation() {
         return ResponseEntity.badRequest().body("Error: State abbreviation is required.");
