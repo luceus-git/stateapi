@@ -1,32 +1,49 @@
 package com.example.stateapi.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 public class StateController {
 
-    // state hmap
+    // State map
     private static final Map<String, String> states = new HashMap<>();
     static {
         states.put("TN", "Tennessee");
         states.put("IL", "Illinois");
         states.put("CA", "California");
         states.put("NY", "New York");
-        // Add database?
     }
 
-    @GetMapping("/state/{abbreviation}") // map pathing
-    public String getStateName(@PathVariable("abbreviation") String abbreviation) {
-        // handle case sensitivity
-        String stateName = states.get(abbreviation.toUpperCase());
-        if (stateName == null) {
-            return "State not found"; // return error code HTTP 404?
+    // ✅ Handles requests to /state/{abbreviation}
+    @GetMapping("/state/{abbreviation}")
+    public ResponseEntity<?> getStateName(@PathVariable String abbreviation) {
+        // Validate abbreviation length (must be 2 characters)
+        if (abbreviation.length() != 2) {
+            return ResponseEntity.badRequest().body("Error: State abbreviation must be exactly 2 letters.");
         }
-        return stateName;
+
+        // Convert to uppercase for case-insensitive lookup
+        abbreviation = abbreviation.toUpperCase();
+
+        // Retrieve the state name or return 404 if not found
+        String stateName = states.get(abbreviation);
+        if (stateName == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: State abbreviation not recognized.");
+        }
+
+        return ResponseEntity.ok(stateName);
+    }
+
+    // ✅ Handles requests to /state/ (missing abbreviation)
+    @GetMapping(value = {"/state/"})
+    public ResponseEntity<?> handleMissingAbbreviation() {
+        return ResponseEntity.badRequest().body("Error: State abbreviation is required.");
     }
 }
+
 
