@@ -1,5 +1,6 @@
 package com.example.stateapi.controller;
 
+import com.example.stateapi.exception.StateNotFoundException;
 import com.example.stateapi.service.StateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,11 +30,10 @@ public class StateController {
 
         // Check if the state exists in the map
         if (stateName == null) {
-            return ResponseEntity.notFound().build();  // Return 404 if state not found
+            // Throw a custom exception if not found
+            throw new StateNotFoundException(abbreviation);
         }
 
         return ResponseEntity.ok(stateName);  // Return the state name if found
     }
-
-
 }
