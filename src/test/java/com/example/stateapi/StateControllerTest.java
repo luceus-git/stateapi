@@ -3,8 +3,7 @@ package com.example.stateapi;
 import com.example.stateapi.controller.StateController;
 import com.example.stateapi.service.StateService;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -15,24 +14,26 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(StateController.class)  // Load only the controller layer
-@ExtendWith(MockitoExtension.class)  // Enable Mockito support
 public class StateControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean  // Use @MockBean instead of @Mock so Spring injects the mock
+    @MockBean  // Automatically creates and injects a mock of StateService
     private StateService stateService;
 
     @Test
     public void testGetStateName_Success() throws Exception {
+        // Mock the service method call
         when(stateService.getStateFullName("NY")).thenReturn("New York");
 
+        // Perform the request and assert the response
         mockMvc.perform(get("/state/NY"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("New York"));
 
-        verify(stateService, times(1)).getStateFullName("NY");  // Ensure the mock was called
+        // Verify that the service method was called exactly once
+        verify(stateService, times(1)).getStateFullName("NY");
     }
 
     @Test
