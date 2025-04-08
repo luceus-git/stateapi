@@ -30,11 +30,11 @@ public class StateController {
 
     @GetMapping("/state/{abbreviation}")
     public ResponseEntity<String> getStateName(@PathVariable String abbreviation) {
-        logger.info("Received request for abbreviation: {}", abbreviation);
+//        logger.info("Received request for abbreviation: {}", abbreviation);
 
         // Validate the abbreviation: Ensure it's exactly 2 characters long and not a number
         if (!abbreviation.toUpperCase().matches("[a-zA-Z]{2}")) {
-            logger.warn("Invalid abbreviation received: {}", abbreviation);
+//            logger.warn("Invalid abbreviation received: {}", abbreviation);
             return ResponseEntity.badRequest().body("Invalid state abbreviation.");
         }
 
@@ -44,11 +44,11 @@ public class StateController {
         // Check if the state exists in the map
         if (stateName == null) {
             // Throw a custom exception if not found
-            logger.error("State not found for abbreviation: {}", abbreviation);
+//            logger.error("State not found for abbreviation: {}", abbreviation);
             throw new StateNotFoundException(abbreviation);
         }
 
-        logger.debug("Resolved abbreviation {} to {}", abbreviation, stateName);
+//        logger.debug("Resolved abbreviation {} to {}", abbreviation, stateName);
         return ResponseEntity.ok(stateName);  // Return the state name if found
     }
 }

@@ -42,11 +42,23 @@ public class StateControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
-    @Test //abbreviation not found
-    public void testGetStateName_NotFound() throws Exception {
-        when(stateService.getStateFullName("ZZ")).thenReturn(null);
+    @Test // invalid abbreviation (1 letter or number)
+    public void testGetStateName_SingleInput() throws Exception {
+        mockMvc.perform(get("/state/1"))
+                .andExpect(status().isBadRequest());
+    }
 
-        mockMvc.perform(get("/state/ZZ"))
+    @Test // abbreviation not found
+    public void testGetStateName_NotFound() throws Exception {
+        when(stateService.getStateFullName("NY")).thenReturn(null);
+
+        mockMvc.perform(get("/state/NY"))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test // null abbreviation
+    public void testGetStateName_NullInput() throws Exception {
+        mockMvc.perform(get("/state/"))
+                .andExpect(status().isBadRequest());
     }
 }

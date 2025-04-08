@@ -19,14 +19,14 @@ public class GlobalExceptionHandler {
     // no abbreviation (ex: http://localhost:8080/state/)
     @ExceptionHandler(MissingAbbreviationException.class)
     public ResponseEntity<?> handleMissingAbbreviation(MissingAbbreviationException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("400 Error: " + ex.getMessage());
     }
 
     // state abbreviation not found (ex: http://localhost:8080/state/zz)
     @ExceptionHandler(StateNotFoundException.class)
     public ResponseEntity<?> handleStateNotFound(StateNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(ex.getMessage());
+                .body("400 Error: " + ex.getMessage());
     }
 
     @ExceptionHandler(org.springframework.web.servlet.NoHandlerFoundException.class)
