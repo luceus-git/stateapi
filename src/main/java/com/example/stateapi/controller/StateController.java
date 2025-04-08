@@ -21,7 +21,8 @@ public class StateController {
     @GetMapping("/state/{abbreviation}")
     public ResponseEntity<String> getStateName(@PathVariable String abbreviation) {
         // Validate the abbreviation: Ensure it's exactly 2 characters long
-        if (abbreviation == null || abbreviation.length() != 2) {
+
+        if (!abbreviation.toUpperCase().matches("[a-zA-Z]{2}")) {
             return ResponseEntity.badRequest().body("Invalid state abbreviation.");
         }
 

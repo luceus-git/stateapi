@@ -22,7 +22,7 @@ public class StateControllerTest {
     @MockBean  // Automatically creates and injects a mock of StateService
     private StateService stateService;
 
-    @Test
+    @Test // valid abbreviation
     public void testGetStateName_Success() throws Exception {
         // Mock the service method call
         when(stateService.getStateFullName("NY")).thenReturn("New York");
@@ -36,13 +36,13 @@ public class StateControllerTest {
         verify(stateService, times(1)).getStateFullName("NY");
     }
 
-    @Test
+    @Test // invalid abbreviation
     public void testGetStateName_InvalidInput() throws Exception {
         mockMvc.perform(get("/state/INVALID"))
                 .andExpect(status().isBadRequest());
     }
 
-    @Test
+    @Test //abbreviation not found
     public void testGetStateName_NotFound() throws Exception {
         when(stateService.getStateFullName("ZZ")).thenReturn(null);
 
