@@ -13,6 +13,7 @@ public class StateService {
     static {
         states.put("TN", "Tennessee");
         states.put("IL", "Illinois");
+        states.put("MD", "Maryland");
         states.put("CA", "California");
         states.put("NY", "New York");
     }
